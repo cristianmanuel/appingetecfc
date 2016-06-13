@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<title>Adelanto</title>
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+			<div style="background-color:blue">
+			<ui:insert name="header">
+				<div class="centro">
+					<ui:include src="cabeza.xhtml" />
+				</div>
+			</ui:insert>
+			</div>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<ui:insert>
+				<ui:include src="barra.xhtml" />
+			</ui:insert>
+			
+			<p:separator />
+				<h:form id="grilla" >
+					<p:panelGrid columns="2" >
+						<h:outputText value="Monto Total de Factura" />
+						<h:outputText value="3558.15" />
+						<h:outputText value="Pendiente" />
+						<h:outputText value="0" />
+					</p:panelGrid>
+
+
+				</h:form>
+							<p:separator />
+
+				<h:form>
+					<p:commandButton value="Registro Adelanto"
+						onclick="PF('dialogRegistro').show();"  />
+				</h:form>
+		
+
+				<p:dialog resizable="false" header="Regristro de adelanto"
+					 width="400" widgetVar="dialogRegistro"
+					showEffect="explode" hideEffect="bounce">
+					<h:form>
+						<p:panelGrid columns="2">
+							<h:outputText value="ID" />
+							<p:inputText value="#{controlFacturaBean.idRegistro}"/>
+							<h:outputText value="Fecha de Cobro" />
+							<p:calendar value="#{controlFacturaBean.fechaCobro}"
+								label="fecha" id="fecNac" effect="fadeIn" maxdate="today"
+								pattern="dd/MM/yyyy" readonlyInput="true">
+							</p:calendar>
+
+							<h:outputText value="Monto" />
+							<p:inputText value="#{controlFacturaBean.montoAdelanto}"/>
+							<h:outputText value="Numero de Operacion" />
+							<p:inputText value="#{controlFacturaBean.numeroOperacion}"/>
+							<h:outputText value="Banco" />
+							<p:inputText value="#{controlFacturaBean.nombreBanco}"/>
+							<h:outputText value="Estado" />
+							<p:selectOneMenu  value="#{controlFacturaBean.estadoAdelanto}" 
+								required="true">
+								<f:selectItem itemLabel="Seleccionar" itemValue="0" />
+								<f:selectItem itemLabel="Pendiente" itemValue="1" />
+								<f:selectItem itemLabel="Cancelado" itemValue="2" />
+							</p:selectOneMenu>
+				
+							<h:outputText value="" />
+							<p:commandButton value="Guardar"
+								onclick="PF('dialogRegistro').hide();" actionListener="#{controlFacturaBean.guardarAdelanto}" 
+									update="@all"	>
+							</p:commandButton>
+						</p:panelGrid>
+
+					</h:form>
+				</p:dialog>
+
+				<p:separator />
+				
+			<h:form id="formAdelanto">
+				
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+						<h:commandLink>
+							<p:graphicImage url="/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tablaDelanto"
+								fileName="Adelando" />
+						</h:commandLink>
+
+						
+					</h:panelGrid>
+				
+				<p:separator />
+				
+				
+				
+
+				
+					<p:dataTable id="tablaDelanto" emptyMessage="No se encontro registros" var="car"
+						paginator="true" value="#{controlFacturaBean.listaAdelanto}"
+						 rows="10" rowsPerPageTemplate="5,10,15">
+
+
+						<p:column headerText="ID">
+							<h:outputText value="#{car.idRegistro}" />
+						</p:column>
+				
+						<p:column headerText="Fecha de Cobro">
+							<h:outputText value="#{car.fechaCobro}">
+                                	<f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+						</p:column>
+						<p:column headerText="Monto (Incluye IGV)">
+							<h:outputText value="#{car.montoAdelanto}" />
+						</p:column>
+						<p:column headerText="Numero de Operacion">
+							<h:outputText value="#{car.numeroOperacion}" />
+						</p:column>
+						<p:column headerText="Banco">
+							<h:outputText value="#{car.nombreBanco}" />
+						</p:column>
+						<p:column headerText="Estado" exportable="false">
+							<p:selectOneMenu  value="#{car.estadoAdelanto}" 
+								required="true">
+								<f:selectItem itemLabel="Seleccionar" itemValue="0" />
+								<f:selectItem itemLabel="Pendiente" itemValue="1" />
+								<f:selectItem itemLabel="Cancelado" itemValue="2" />
+							</p:selectOneMenu>
+						</p:column>
+
+					</p:dataTable>
+
+				</h:form>
+				<p:separator />
+				<h:form>
+					<p:commandButton value="Cerrar"
+						action="#{loginUsuario.enviarControldeFacturas}" ajax="false" />
+				</h:form>
+			
+
+
+		
+
+		</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+		
+
+	</p:layout>
+	
+	
+	
+</h:body>
+
+</html>

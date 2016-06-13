@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	<title>Pago de Proveedores</title>
+</h:head>
+
+<h:body>
+
+
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+			<div style="background-color: blue">
+				<ui:insert name="header">
+					<div class="centro">
+						<ui:include src="cabeza.xhtml" />
+					</div>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+
+			<div class="scroll4">
+
+				<ui:insert>
+					<ui:include src="barra.xhtml" />
+				</ui:insert>
+
+
+
+				<h:form id="form2">
+
+
+
+					<p:separator />
+					<p:growl id="msgs" showDetail="true" />
+
+					<p:panelGrid columns="2" style="margin: 0 auto;">
+
+						<h:outputText value="Proveedor" />
+
+						<p:selectOneMenu value="#{pagoProveedorBean.nuevoCodigoProv}">
+							<f:selectItem itemLabel="Seleccionar" itemValue="0"
+								noSelectionOption="true" />
+							<f:selectItems value="#{pagoProveedorBean.listaProveedor}"
+								var="c" itemValue="#{c.cod_prove}" itemLabel="#{c.nom_prove}" />
+
+
+						</p:selectOneMenu>
+						<h:outputText value="Proyecto" />
+						<p:selectOneMenu value="#{pagoProveedorBean.nuevocodProyecto}">
+							<f:selectItem itemLabel="Seleccionar" itemValue="0"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Option 1" itemValue="1" />
+							<f:selectItem itemLabel="Option 2" itemValue="2" />
+							<f:selectItem itemLabel="Option 3" itemValue="3" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Numero de Comprobante" />
+						<p:inputText value="#{pagoProveedorBean.numComprobante}" />
+
+						<h:outputText value="Fecha Previsto de Cobro" />
+						<p:calendar value="#{pagoProveedorBean.fechaCobro}" label="fecha"
+							effect="fadeIn" pattern="dd/MM/yyyy" readonlyInput="true">
+						</p:calendar>
+
+						<h:outputText value="Estado" />
+						<p:selectOneMenu value="#{pagoProveedorBean.nuevoEstado}">
+							<f:selectItem itemLabel="Estado" itemValue="0"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Pendiente de cobro" itemValue="1" />
+							<f:selectItem itemLabel="Anulado" itemValue="2" />
+							<f:selectItem itemLabel="Cobrado" itemValue="3" />
+						</p:selectOneMenu>
+						<h:outputText value="" />
+
+						<p:commandButton value="Buscar"
+							actionListener="#{pagoProveedorBean.buscarComprobantee}"
+							update="tablaComprobante">
+						</p:commandButton>
+
+					</p:panelGrid>
+
+
+
+					<p:separator />
+
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<h:commandLink>
+							<p:graphicImage url="/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tablaComprobante"
+								fileName="Pago_Proveedores" />
+						</h:commandLink>
+
+						
+					</h:panelGrid>
+
+					<p:separator />
+
+
+					<p:dataTable id="tablaComprobante" var="pago"
+						value="#{pagoProveedorBean.listaGrillaPagoProveedores}"
+						paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+						editable="true" emptyMessage="No se encontraron registros">
+						<f:facet name="header">
+                    Pago de Proveedores
+                </f:facet>
+						<p:ajax event="rowEdit" listener="#{pagoProveedorBean.onRowEdit}"
+							update=":form2:msgs" />
+						<p:ajax event="rowEditCancel"
+							listener="#{pagoProveedorBean.onRowCancel}" update=":form2:msgs" />
+
+						<p:column headerText="Comprobante" width="8%">
+							<h:outputText value="#{pago.tipoComprobante}" />
+						</p:column>
+
+						<p:column headerText="N° de Comprobante" width="8%">
+							<h:outputText value="#{pago.nComprobante}" />
+						</p:column>
+
+						<p:column headerText="Fecha Comprobante" width="8%">
+							<h:outputText value="#{pago.fechaComp}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Fecha Valid." width="7%">
+							<h:outputText value="#{pago.fechaValid}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="F. Pago Prev." style="color: green"
+							width="7%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{pago.fechaPagoPrev}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:calendar value="#{pago.fechaPagoPrev}" label="fecha"
+										id="fecNac" effect="fadeIn" maxdate="today" pattern="dd/MM/yy"
+										readonlyInput="true">
+									</p:calendar>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="N° O.Pago" width="7%">
+							<h:outputText value="#{pago.nPago}" />
+						</p:column>
+
+						<p:column headerText="Tipo Gasto" width="7%">
+							<h:outputText value="#{pago.tipoGasto1}" />
+						</p:column>
+
+						<p:column headerText="Proveedor" width="8%">
+							<h:outputText value="#{pago.proveedor}" />
+						</p:column>
+
+						<p:column headerText="Proyecto" width="8%">
+							<h:outputText value="#{pago.proyecto}" />
+						</p:column>
+
+						<p:column headerText="Monto OC" width="7%">
+							<h:outputText value="#{pago.montoOc}" />
+						</p:column>
+
+
+						<p:column headerText="Monto Solicitado" width="7%">
+							<h:outputText value="#{pago.montoSolic}" />
+						</p:column>
+
+						<p:column headerText="Porcentaje" width="7%">
+							<h:outputText value="#{pago.porcentaje}" />
+						</p:column>
+
+						<p:column headerText="Validado" style="color: green" width="7%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{pago.validado}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{pago.validado}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Moneda" width="7%">
+							<h:outputText value="#{pago.moneda}" />
+						</p:column>
+
+						<p:column headerText="Detraccion" width="7%">
+							<h:outputText value="#{pago.detraccion}" />
+						</p:column>
+
+						<p:column headerText="Bancarizado" width="7%">
+							<h:outputText value="#{pago.bancarizado}" />
+						</p:column>
+
+						<p:column headerText="Semana" width="7%">
+							<h:outputText value="#{pago.nroSemana}" />
+						</p:column>
+
+						<p:column headerText="Tipo de Gasto" width="7%">
+							<h:outputText value="#{pago.tipoGasto2}" />
+						</p:column>
+
+						<p:column headerText="Marca" width="7%" >
+							<h:outputText value="#{pago.marca}" />
+						</p:column>
+
+
+						<p:column headerText="Editar" width="7%" exportable="false">
+							<p:rowEditor />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+
+			</div>
+
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+
+
+	</p:layout>
+</h:body>
+
+</html>

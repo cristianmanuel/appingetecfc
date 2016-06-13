@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	<title>Gastos Administrativos</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+			<div style="background-color: blue">
+				<ui:insert name="header">
+					<div class="centro">
+						<ui:include src="cabeza.xhtml" />
+					</div>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<ui:insert>
+				<ui:include src="barra.xhtml" />
+			</ui:insert>
+
+			<p:separator />
+			<h:form id="form2">
+				<p:commandButton value="Nuevo Gasto Administrativo"
+					action="#{gastoAdministrativoBean.enviarNuevoGastoAdministrativo}"
+					ajax="false" />
+				<p:separator />
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<h:commandLink>
+						<p:graphicImage url="/images/excel.png" width="24" />
+						<p:dataExporter type="xls" target="tablaAdmi"
+							fileName="Gastos_Adminisrtativos" />
+					</h:commandLink>
+
+
+				</h:panelGrid>
+
+				<p:separator />
+
+
+
+
+				<p:dataTable id="tablaAdmi" var="car"
+					value="#{gastoAdministrativoBean.listaGrillaAdministrativa}"
+					paginator="true" emptyMessage="No se encontraron registros" rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+                    Gastos Administrativos
+                </f:facet>
+
+					<p:column headerText="ID">
+						<h:outputText value="#{car.idGastroAdministrativo}" />
+					</p:column>
+
+					<p:column headerText="Año">
+						<h:outputText value="#{car.anio}" />
+					</p:column>
+
+					<p:column headerText="Mes">
+						<h:outputText value="#{car.mes}" />
+					</p:column>
+
+					<p:column headerText="Monto">
+						<h:outputText value="#{car.monto}" />
+					</p:column>
+					<p:column headerText="" exportable="false">
+						<p:commandButton value="Ver"
+							action="#{gastoAdministrativoBean.enviarNuevoGastoAdministrativo}"
+							ajax="false">
+							<f:param name="codIdAdministrativo"
+								value="#{car.idGastroAdministrativo}" />
+						</p:commandButton>
+					</p:column>
+					<p:column headerText="Accion" exportable="false">
+						<p:commandButton value="Eliminar"
+							actionListener="#{gastoAdministrativoBean.eliminarGasto}"
+							update=":form2:">
+							<f:param name="codIdAdministrativo"
+								value="#{car.idGastroAdministrativo}" />
+							<p:confirm message="¿Seguro de eliminar?" header="Aviso"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+
+
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Si" type="button" icon="ui-icon-check"
+						styleClass="ui-confirmdialog-yes" />
+					<p:commandButton value="No" type="button" icon="ui-icon-close"
+						styleClass="ui-confirmdialog-no" />
+				</p:confirmDialog>
+
+
+			</h:form>
+
+
+
+
+
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+
+</html>

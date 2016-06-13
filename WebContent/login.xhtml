@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="ingetec.css" />
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<title>Iniciar Sesión - Ingetec</title>
+</h:head>
+
+<h:body>
+	<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h:graphicImage url="/images/logo_ingetec.png" />
+			</div>
+		</div>
+	</div>
+	</header>
+	<div class="caja">
+		<div class="container">
+			<div class="row">
+				<div class="inner-login">
+					<div class="text-center text-uppercase">
+						<h3>Iniciar Sesión</h3>
+					</div>
+					<h:form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-sm-4">
+								<h:outputLabel value="Usuario :" class="control-label" />
+							</div>
+							<div class="col-sm-8">
+								<p:inputText value="#{loginUsuario.nombreUsuario}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-4">
+								<h:outputLabel  value="Contraseña :" class="control-label" />
+							</div>
+							<div class="col-sm-8">
+								<p:password value="#{loginUsuario.clave}"  />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-8">
+								<h:outputText value="#{loginUsuario.mensaje}"  style="color:red;font-size:20px;weight: bold;"/>
+							</div>
+
+							
+						
+							<div class="col-md-offset-4 col-md-8 text-right">
+								<p:commandButton value="Iniciar sesión"
+									styleClass="btn btn-primary"
+									actionListener="#{loginUsuario.loguear}" update="msgLogin" />
+								<p:messages id="msgLogin" />
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+	<div class="midle_footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	</footer>
+</h:body>
+</html>

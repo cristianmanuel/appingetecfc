@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	<title>Nota de Credito</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+			<div style="background-color:blue">
+			<ui:insert name="header">
+				<div class="centro">
+					<ui:include src="cabeza.xhtml" />
+				</div>
+			</ui:insert>
+			</div>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<ui:insert>
+				<ui:include src="barra.xhtml" />
+			</ui:insert>
+			<p:separator />
+			<h:form>
+				<p:commandButton value="Nuevo" onclick="PF('dialogNuevo').show();" />
+			</h:form>
+			
+
+			<p:dialog resizable="false" header="Ingresar Nota de Credito"
+				 width="400" widgetVar="dialogNuevo"
+				showEffect="explode" hideEffect="bounce">
+				<h:form>
+					<p:panelGrid columns="2">
+						<h:outputText value="ID" />
+						<p:inputText value="#{controlFacturaBean.idnotaCredito}" />
+						<h:outputText value="Acreedor" />
+						<p:inputText value="#{controlFacturaBean.acreedot}" />
+						<h:outputText value="Descripcion" />
+						<p:inputText value="#{controlFacturaBean.descripcion}" />
+						<h:outputText value="Monto (Incluye IGV)" />
+						<p:inputText value="#{controlFacturaBean.montoNotaCredito}" />
+						<h:outputText value="Fecha" />
+						<p:calendar value="#{controlFacturaBean.fechaNotaCredito}"
+							label="fecha" required="true" effect="fadeIn" maxdate="today"
+							pattern="dd/MM/yy" readonlyInput="true">
+						</p:calendar>
+
+						<h:outputText value="" />
+						<p:commandButton value="Guardar" update="@all"
+							actionListener="#{controlFacturaBean.guardarCredito}"
+							onclick="PF('dialogNuevo').hide();" />
+					</p:panelGrid>
+
+				</h:form>
+			</p:dialog>
+			
+				<p:separator />
+			
+			<h:form id="formulario">
+			
+			<h:panelGrid columns="2" style="margin: 0 auto;">
+						<h:commandLink>
+							<p:graphicImage url="/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tablaNotaCredito"
+								fileName="Nota_Credito" />
+						</h:commandLink>
+
+						
+					</h:panelGrid>
+				
+				<p:separator />
+				
+			
+
+
+
+			
+				<p:dataTable id="tablaNotaCredito"
+					emptyMessage="No se encontro registros" var="car"
+					value="#{controlFacturaBean.listaNotaCredito}" paginator="true"
+					rows="10" rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+                                Nota de Credito
+                            </f:facet>
+					<p:column headerText="ID">
+						<h:outputText value="#{car.idnotaCredito}" />
+					</p:column>
+					<p:column headerText="Acreedor">
+						<h:outputText value="#{car.acreedot}" />
+					</p:column>
+					<p:column headerText="Descripcion">
+						<h:outputText value="#{car.descripcion}" />
+					</p:column>
+					<p:column headerText="Monto (Incluye IGV)">
+						<h:outputText value="#{car.montoNotaCredito}" />
+					</p:column>
+					<p:column headerText="Fecha">
+						<h:outputText value="#{car.fechaNotaCredito}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:separator />
+			<h:form>
+				<p:commandButton value="Cerrar"
+					action="#{loginUsuario.enviarControldeFacturas}" ajax="false" />
+			</h:form>
+
+	</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+		
+		
+		
+
+	</p:layout>
+	
+
+	
+	
+</h:body>
+
+</html>

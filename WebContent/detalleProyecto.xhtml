@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	<title>Detalle de Proyecto</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+			<div style="background-color: blue">
+				<ui:insert name="header">
+					<div class="centro">
+						<ui:include src="cabeza.xhtml" />
+					</div>
+				</ui:insert>
+			</div>
+		</p:layoutUnit>
+		<p:layoutUnit position="center">
+
+			<div class="scroll">
+				<ui:insert>
+					<ui:include src="barra.xhtml" />
+				</ui:insert>
+				<p:separator />
+
+				<h:form id="form2">
+
+					<p:panelGrid columns="2" style="margin: 0 auto;">
+						<h:outputText value="ID" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.idProyecto}" />
+						<h:outputText value="Cliente" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.nombreCliente}" />
+						<h:outputText value="Proyecto" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.nombreCliente}" />
+						<h:outputText value="Monto S/." />
+						<h:outputText value="#{proyectoBean.grillaProyecto.monto}" />
+						<h:outputText value="Gasto Actual" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.gastoActual}" />
+						<h:outputText value="Orden de Compra" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.ordenCompra}" />
+						<h:outputText value="Fecha de Inicio" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.fechaInicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputText value="Fecha de Fin" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.fechaFin}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputText value="Estado" />
+						<h:outputText value="#{proyectoBean.grillaProyecto.estado}" />
+					</p:panelGrid>
+				</h:form>
+				<p:separator />
+
+				<h:form id="form3">
+
+					
+
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<h:commandLink>
+							<p:graphicImage url="/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tablaIngreso"
+								fileName="Ingresos" />
+						</h:commandLink>
+
+						
+					</h:panelGrid>
+
+					<p:separator />
+
+
+
+					<p:dataTable var="car" value="#{proyectoBean.listaGrillaIngreso}" id="tablaIngreso"
+						paginator="true" emptyMessage="No se encontraron registros" rowsPerPageTemplate="5,10,15">
+
+
+						<f:facet name="header">
+                    INGRESOS
+                </f:facet>
+						<p:column headerText="ID">
+							<h:outputText value="#{car.idIngreso}" />
+						</p:column>
+						<p:column headerText="Numero de Factura">
+							<h:outputText value="#{car.numeroFactura}" />
+						</p:column>
+
+						<p:column headerText="Fecha Proceso">
+							<h:outputText value="#{car.fechaProceso}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+						</p:column>
+
+						<p:column headerText="Fecha de Pago">
+							<h:outputText value="#{car.fechaPago}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="SUBTOTAL">
+							<h:outputText value="#{car.subtotal}" />
+						</p:column>
+
+						<p:column headerText="IGV">
+							<h:outputText value="#{car.igv}" />
+						</p:column>
+
+						<p:column headerText="TOTAL">
+							<h:outputText value="#{car.total}" />
+						</p:column>
+
+						<p:column headerText="DETRACCION (12%)">
+							<h:outputText value="#{car.detraccion}" />
+						</p:column>
+
+						<p:column headerText="RETENCION (10%)">
+							<h:outputText value="#{car.retencion}" />
+						</p:column>
+
+						<p:column headerText="MONTO REAL">
+							<h:outputText value="#{car.montoReal}" />
+						</p:column>
+
+						<p:column headerText="Estado">
+							<h:outputText value="#{car.estado}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				<h:form>
+					<p:separator />
+					<p:panelGrid columns="2" style="margin: 0 auto;">
+						<h:outputText value="Monto Total" style="font-weight:bold" />
+						<h:outputText value="2000" />
+						<h:outputText value="Cobro a la fecha" style="font-weight:bold" />
+						<h:outputText value="1652.80" />
+						<h:outputText value="Pendiente de Facturacion"
+							style="font-weight:bold" />
+						<h:outputText value="7855.36" />
+
+					</p:panelGrid>
+
+				</h:form>
+				<p:separator />
+
+
+				<h:form>
+				
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<h:commandLink>
+							<p:graphicImage url="/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tablaEgreso"
+								fileName="Egresos" />
+						</h:commandLink>
+
+						
+					</h:panelGrid>
+
+					<p:separator />
+				
+				
+					<p:dataTable var="car" value="#{proyectoBean.listaGrillaEgreso}" id="tablaEgreso"
+						paginator="true" emptyMessage="No se encontraron registros" rowsPerPageTemplate="5,10,15">
+
+
+						<f:facet name="header">
+                    EGRESOS
+                </f:facet>
+						<p:column headerText="Comprobante">
+							<h:outputText value="#{car.idComprobante}" />
+						</p:column>
+						<p:column headerText="N° Comprobante">
+							<h:outputText value="#{car.nComprobante}" />
+						</p:column>
+
+						<p:column headerText="Fecha Comp.">
+							<h:outputText value="#{car.fechaComp}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Fecha Valid.">
+							<h:outputText value="#{car.fechaValid}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+						</p:column>
+
+						<p:column headerText="F. Pago Prev.">
+							<h:outputText value="#{car.fechaPagoPrev}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="N° O. Pago">
+							<h:outputText value="#{car.nOpago}" />
+						</p:column>
+
+						<p:column headerText="Tipo Gasto">
+							<h:outputText value="#{car.tipoGasto}" />
+						</p:column>
+
+						<p:column headerText="Proveedor">
+							<h:outputText value="#{car.nProveedor}" />
+						</p:column>
+
+						<p:column headerText="Proyecto">
+							<h:outputText value="#{car.nProyecto}" />
+						</p:column>
+
+
+						<p:column headerText="Monto OC">
+							<h:outputText value="#{car.montoOc}" />
+						</p:column>
+
+						<p:column headerText="Monto Solic">
+							<h:outputText value="#{car.montoSolic}" />
+						</p:column>
+
+						<p:column headerText="Porcent.">
+							<h:outputText value="#{car.porcentaje}" />
+						</p:column>
+
+						<p:column headerText="Validado">
+							<h:outputText value="#{car.validado}" />
+						</p:column>
+
+						<p:column headerText="Moneda">
+							<h:outputText value="#{car.moneda}" />
+						</p:column>
+
+						<p:column headerText="Detraccion">
+							<h:outputText value="#{car.detraccion}" />
+						</p:column>
+
+						<p:column headerText="Bancarizado">
+							<h:outputText value="#{car.bancarizado}" />
+						</p:column>
+
+						<p:column headerText="Semana">
+							<h:outputText value="#{car.nSemana}" />
+						</p:column>
+
+						<p:column headerText="Tipo Gasto">
+							<h:outputText value="#{car.tipoGasto2}" />
+						</p:column>
+
+						<p:column headerText="Marca">
+							<h:outputText value="#{car.marca}" />
+						</p:column>
+
+					</p:dataTable>
+
+
+				</h:form>
+				<p:separator />
+
+
+				<h:form>
+					<p:panelGrid columns="2" style="margin: 0 auto;">
+						<h:outputText value="Gasto a la fecha"
+							style="font-weight:bold;color:red" />
+						<h:outputText value="2500" />
+
+
+					</p:panelGrid>
+
+				</h:form>
+
+			</div>
+
+
+		</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+
+</html>

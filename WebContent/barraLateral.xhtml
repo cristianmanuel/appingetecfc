@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<ui:composition>
+	<h:form>
+		<p:panelMenu style="width:200px">
+			<p:submenu label="Sincronización">
+				<p:menuitem value="Sincronización de Información"  action="#{loginUsuario.enviarSincronizarInformacion}" ajax="false"/>
+			</p:submenu>
+
+			<p:submenu label="Administración">
+				<p:menuitem value="Control de Facturas"
+					action="#{loginUsuario.enviarControldeFacturas}" ajax="false" />
+				<p:menuitem value="Pago de Proveedores"
+					action="#{loginUsuario.enviarPagoProveedores}" ajax="false" />
+				<p:menuitem value="Proyectos"
+					action="#{loginUsuario.enviarProyectos}" ajax="false" />
+				<p:menuitem value="Gastos Administrativos"
+					action="#{loginUsuario.enviarGastosAdministrativos}" ajax="false"
+					actionListener="#{gastoAdministrativoBean.llenarGrilllaGasto}" />
+				<p:menuitem value="Caja Chica"
+					action="#{loginUsuario.enviarCajaChica}" ajax="false" 
+					actionListener="#{pendienteBean.llenarGrilllaChica}" />
+				<p:menuitem value="Prestamos"
+					action="#{loginUsuario.enviarPrestamos}" ajax="false" />
+				<p:menuitem value="Traspaso de Efectivo"
+					action="#{loginUsuario.enviarTraspasoEfectivo}" ajax="false" />
+			</p:submenu>
+			<p:submenu label="Reportes">
+				<p:menuitem value="Flujo Caja Soles"  action="#{loginUsuario.enviarFlujoSoles}"  ajax="false"/>
+				<p:menuitem value="Flujo Caja Dolares" action="#{loginUsuario.enviarFlujoDolares}" ajax="false"/>
+				<p:menuitem value="Pendiente Detracciones"
+					action="#{loginUsuario.enviarPendienteDetracciones}" ajax="false" 
+					actionListener="#{pendienteBean.llenarGrilllaGasto}" />
+			</p:submenu>
+		
+		</p:panelMenu>
+	</h:form>
+
+
+</ui:composition>
+
+
+
+</html>

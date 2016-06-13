@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="cssLayout.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	
+	<title>Flujo de Caja Dolares</title>
+</h:head>
+
+<h:body>
+	
+	<p:layout fullPage="true" resizeTitle="resize" >
+		
+		<p:layoutUnit position="north" size="120" collapsible="false" >
+		<div style="background-color:blue">
+			<ui:insert name="header" >
+				<div class="centro" >
+				<ui:include src="cabeza.xhtml" /> 
+				</div>
+			</ui:insert>
+		</div>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+		
+			
+			<ui:insert>
+				<ui:include src="barra.xhtml" />
+			</ui:insert>
+			<br></br>
+			<br></br>
+			<p:separator></p:separator>
+		<h1>Bienvenido #{loginUsuario.nombreUsuario} </h1>
+			
+				
+
+		</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Menú"
+			resizable="true" closable="true" collapsible="true">
+			<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
+		
+		<p:layoutUnit
+			header="INGETEC ,  CONSULTORES  Y  EJECUTORES - TODOS LOS DERECHOS RESERVADOS"
+			style="text-align: center;" position="south" size="100"
+			collapsible="true" resizable="true" closable="true">
+			<br />
+			<div class="pie">
+				<ui:insert name="header">
+					<ui:include src="pie.xhtml" />
+				</ui:insert>
+
+			</div>
+
+		</p:layoutUnit>
+		
+
+	</p:layout>
+</h:body>
+
+</html>

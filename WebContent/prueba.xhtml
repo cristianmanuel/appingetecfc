@@ -1,0 +1,370 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="default.css" />
+	<f:metadata>
+		<f:event listener="#{loginUsuario.verifyLogin}" type="preRenderView"></f:event>
+	</f:metadata>
+	<title>Ingreso al Sistema</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true" resizeTitle="resize">
+
+		<p:layoutUnit position="north" size="120" collapsible="false">
+
+			<ui:insert name="header">
+				<ui:include src="cabeza.xhtml" />
+			</ui:insert>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<ui:insert>
+				<ui:include src="barra.xhtml" />
+			</ui:insert>  
+		<p:separator/>	
+			<h:form id="form2">
+		<p:growl id="msgs" showDetail="true" />
+
+		<p:panelGrid columns="3" style="margin: 0 auto;">
+
+			<h:outputText value="Cliente" />
+
+			<p:selectOneMenu value="#{controlFacturaBean.nuevoIdCliente}">
+				<f:selectItem itemLabel="Seleccionar" itemValue="0"
+					noSelectionOption="true" />
+				<f:selectItems value="#{controlFacturaBean.listaCliente}" var="c"
+					itemValue="#{c.ruc_clie}" itemLabel="#{c.nom_clie}" />
+				<p:ajax event="change"
+					listener="#{controlFacturaBean.cambiarComboProyecto}"
+					update="comboProyecto" />
+
+			</p:selectOneMenu>
+		
+			<p:commandButton value="Registrar Factura"
+				onclick="PF('dialogRegistro3').show();" actionListener="#{controlFacturaBean.limpiarCamposNueva}"  
+				/>
+
+			<h:outputText value="Proyecto" />
+
+			<p:selectOneMenu id="comboProyecto"
+				value="#{controlFacturaBean.nuevoIdProyecto}">
+				<f:selectItem itemLabel="Seleccionar" itemValue="0"
+					noSelectionOption="true" />
+				<f:selectItems value="#{controlFacturaBean.listaProyecto}" var="c"
+					itemValue="#{c.codigo_proyecto}" itemLabel="#{c.nom_id}" />
+			</p:selectOneMenu>
+
+			<h:outputText value="" />
+			<h:outputText value="Nueva Factura" />
+			<p:inputText value="#{controlFacturaBean.numeroFactura}" />
+			<p:commandButton value="Buscar"
+				actionListener="#{controlFacturaBean.buscarFactura}"
+				update="tablaFactura" />
+
+
+			<h:outputText value="Fecha Previsto de Cobro" />
+			<p:calendar value="#{clienteBean.fechaPrevistaCobro}" label="fecha"
+				id="fecNac" effect="fadeIn" maxdate="today" pattern="dd/MM/yyyy"
+				readonlyInput="true">
+			</p:calendar>
+			<h:outputText value="" />
+
+
+
+		</p:panelGrid>
+		<p:separator />
+
+	<div class="scroll">
+		<p:dataTable id="tablaFactura" var="cont" rowKey="#{cont.idProyecto}"
+			value="#{controlFacturaBean.listaGrilla}" paginator="true"
+			 rows="10" rowsPerPageTemplate="5,10,15"
+			rowIndexVar="rowId" emptyMessage="No se encontraron registros"
+			editable="true">
+			<f:facet name="header">
+                    Facturas
+                </f:facet>
+			<p:ajax event="rowEdit" listener="#{controlFacturaBean.onRowEdit}"
+				update=":form2:msgs" />
+			<p:ajax event="rowEditCancel"
+				listener="#{controlFacturaBean.onRowCancel}" update=":form2:msgs" />
+			<p:column headerText="ID">
+				<h:outputText value="#{rowId+1}" />
+			</p:column>
+			<p:column headerText="ID DEL PROYECTO">
+				<h:outputText value="#{cont.idProyecto}" />
+			</p:column>
+
+			<p:column headerText="NOMBRE DEL PROYECTO">
+				<h:outputText value="#{cont.nombreProyecto}" />
+			</p:column>
+
+			<p:column headerText="NUMERO FACTURA">
+				<h:outputText value="#{cont.numeroFactura}" />
+			</p:column>
+
+
+			<p:column headerText="FECHA DE PROCESO">
+				<h:outputText value="#{cont.fechaProceso}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="FECHA DE PAGO">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.fechaPago}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar value="#{cont.fechaPago}" label="fecha" id="fecNac"
+							effect="fadeIn" maxdate="today" pattern="dd/MM/yy"
+							readonlyInput="true">
+						</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="SUB TOTAL">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.subTotal}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.subTotal}"
+							converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="IGV">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.igv}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.igv}" converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="TOTAL">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.total}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.total}" converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="DETRACCION (12%)" width="8%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.detraccion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.detraccion}"
+							converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="RETENCION (10%)" width="8%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.retencion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.retencion}"
+							converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Nota de Credito">
+				<p:commandButton value="Ver"
+					action="#{controlFacturaBean.enviarNotaCredito}">
+
+					<f:param name="codigoFactura" value="#{cont.idProyecto}" />
+				</p:commandButton>
+
+
+			</p:column>
+
+			<p:column headerText="Adelantos">
+				<p:commandButton value="Ver"
+					action="#{controlFacturaBean.enviarVerAdelantos}">
+					<f:param name="codigoFactura" value="#{cont.idProyecto}" />
+				</p:commandButton>
+			</p:column>
+
+			<p:column headerText="Monto Real">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{cont.montoReal}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{cont.montoReal}"
+							converter="javax.faces.Double" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="Estado">
+				<p:cellEditor>
+					<f:facet name="output">
+						<p:selectOneMenu value="#{cont.estado}">
+							<f:selectItem itemLabel="Estado" itemValue="0"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Pendiente de cobro" itemValue="1" />
+							<f:selectItem itemLabel="Anulado" itemValue="2" />
+							<f:selectItem itemLabel="Cobrado" itemValue="3" />
+						</p:selectOneMenu>
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{cont.estado}">
+							<f:selectItem itemLabel="Estado" itemValue="0"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Pendiente de cobro" itemValue="1" />
+							<f:selectItem itemLabel="Anulado" itemValue="2" />
+							<f:selectItem itemLabel="Cobrado" itemValue="3" />
+						</p:selectOneMenu>
+					</f:facet>
+
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column headerText="Aprobado">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:selectBooleanCheckbox value="#{cont.aprobado}" />
+					</f:facet>
+					<f:facet name="input">
+						<h:selectBooleanCheckbox value="#{cont.aprobado}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Editar">
+				<p:rowEditor />
+			</p:column>
+		</p:dataTable>
+		
+		
+		</div>
+	</h:form>
+
+
+	<p:dialog resizable="false" header="Regristro de adelanto" modal="true"
+		width="400" widgetVar="dialogRegistro3" showEffect="explode"
+		hideEffect="bounce" id="dialogo">
+		<h:form>
+			<p:panelGrid columns="2" style="margin: 0 auto;">
+				<h:outputText value="Cliente:" />
+				<p:selectOneMenu value="#{controlFacturaBean.nuevoIdCliente}">
+					<f:selectItem itemLabel="Seleccionar" itemValue="0"
+						noSelectionOption="true" />
+					<f:selectItems value="#{controlFacturaBean.listaCliente}" var="c"
+						itemValue="#{c.ruc_clie}" itemLabel="#{c.nom_clie}" />
+					<p:ajax event="change"
+						listener="#{controlFacturaBean.cambiarComboProyecto}"
+						update="comboProyecto" />
+
+				</p:selectOneMenu>
+
+
+				<h:outputText value="Proyecto:" />
+
+				<p:selectOneMenu id="comboProyecto"
+					value="#{controlFacturaBean.nuevoIdProyecto}">
+					<f:selectItem itemLabel="Seleccionar" itemValue="0"
+						noSelectionOption="true" />
+					<f:selectItems value="#{controlFacturaBean.listaProyecto}" var="c"
+						itemValue="#{c.codigo_proyecto}" itemLabel="#{c.nom_id}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="Numero de Factura:" />
+				<p:inputText value="#{controlFacturaBean.numeroFactura}" />
+
+				<h:outputText value="Fecha de Proceso:" />
+				<p:calendar value="#{controlFacturaBean.fechaPrevistaCobro}"
+					label="fecha" required="true" id="fech1" effect="fadeIn"
+					maxdate="today" pattern="dd/MM/yy" readonlyInput="true">
+				</p:calendar>
+
+				<h:outputText value="Fecha de Pago:" />
+				<p:calendar value="#{controlFacturaBean.fechaPrevistaPago}"
+					label="fecha" required="true" id="fech2" effect="fadeIn"
+					maxdate="today" pattern="dd/MM/yy" readonlyInput="true">
+				</p:calendar>
+
+				<h:outputText value="SUB TOTAL:" />
+				<p:inputText value="#{controlFacturaBean.subtotal}" />
+
+				<h:outputText value="IGV:" />
+				<p:inputText value="#{controlFacturaBean.igv}" />
+
+				<h:outputText value="TOTAL:" />
+				<p:inputText value="#{controlFacturaBean.total}" />
+
+				<h:outputText value="DETRACCION (12%):" />
+				<p:inputText value="#{controlFacturaBean.detraccion}" />
+
+				<h:outputText value="RETENCION (10%):" />
+				<p:inputText value="#{controlFacturaBean.retencion}" />
+
+				<h:outputText value="MONTO REAL:" />
+				<p:inputText value="#{controlFacturaBean.montoReal}" />
+
+				<h:outputText value="APROBADO:" />
+				<p:selectOneRadio value="#{controlFacturaBean.esAprobado}">
+					<f:selectItem itemLabel="Aprobado" itemValue="Aprobado" />
+					<f:selectItem itemLabel="Desaprobado" itemValue="Desaprobado" />
+				</p:selectOneRadio>
+				<h:outputText value="Estado Factura:" />
+				<p:selectOneMenu value="#{controlFacturaBean.estadoFactura}"
+					required="true">
+					<f:selectItem itemLabel="Estado" itemValue="0"
+						noSelectionOption="true" />
+					<f:selectItem itemLabel="Pendiente de cobro" itemValue="1" />
+					<f:selectItem itemLabel="Anulado" itemValue="2" />
+					<f:selectItem itemLabel="Cobrado" itemValue="3" />
+				</p:selectOneMenu>
+			<h:outputText/>
+				<p:commandButton value="Guardar"
+					actionListener="#{controlFacturaBean.retornarControldeFacturas}"
+					onclick="PF('dialogRegistro3').hide();" update="@all"/>
+
+
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+       			
+		</p:layoutUnit>
+		
+		 <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">
+        	<ui:insert name="header">
+				<ui:include src="barraLateral.xhtml" />
+			</ui:insert>
+    	</p:layoutUnit>
+		
+		
+		
+		
+	</p:layout>
+</h:body>
+
+</html>

@@ -1,0 +1,78 @@
+header {
+	padding: 10px 0;
+	background-image: linear-gradient(to bottom, #283593 0%, #3F51B5 100%);
+	-webkit-background-image: linear-gradient(to bottom, #283593 0%, #3F51B5 100%);
+	-moz-background-image: linear-gradient(to bottom, #283593 0%, #3F51B5 100%);
+	-ms-background-image: linear-gradient(to bottom, #283593 0%, #3F51B5 100%);
+	-o-background-image: linear-gradient(to bottom, #283593 0%, #3F51B5 100%);
+}
+
+.inner-login {
+	-webkit-box-shadow: 2px 5px 3px #ccc;
+	-moz-box-shadow: 2px 5px 3px #ccc;
+	box-shadow: 2px 5px 3px #ccc;
+	background: #fff;
+	padding: 20px 20px 20px 20px;
+	max-width: 400px;
+	margin: 60px auto;
+}
+
+input[type=text], input[type=password] {
+	width: 100%;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+hr {
+	width: 100%;
+	background-color: #ddd;
+	height: 1px;
+	border: none;
+	margin: 20px 0;
+}
+
+footer {
+	min-height: 20px;
+	padding: 19px;
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.midle_footer {
+	background: rgba(247, 248, 248, 1);
+	background: -moz-linear-gradient(top, rgba(247, 248, 248, 1) 0%,
+		rgba(221, 222, 222, 1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(247, 248,
+		248, 1)), color-stop(100%, rgba(221, 222, 222, 1)));
+	background: -webkit-linear-gradient(top, rgba(247, 248, 248, 1) 0%,
+		rgba(221, 222, 222, 1) 100%);
+	background: -o-linear-gradient(top, rgba(247, 248, 248, 1) 0%,
+		rgba(221, 222, 222, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(247, 248, 248, 1) 0%,
+		rgba(221, 222, 222, 1) 100%);
+	background: linear-gradient(to bottom, rgba(247, 248, 248, 1) 0%,
+		rgba(221, 222, 222, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f8f8',
+		endColorstr='#dddede', GradientType=0);
+}
+
+.caja {
+	min-height: 20px;
+	padding: 19px;
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
